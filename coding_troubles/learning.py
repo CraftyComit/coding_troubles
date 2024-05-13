@@ -3,6 +3,8 @@ from pygame.locals import *
 import sys
 import random
 import time
+import os
+
  
 pygame.init()
 vec = pygame.math.Vector2 #2 for two dimensional
@@ -12,20 +14,32 @@ WIDTH = 400
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
- 
+screen = 1
+pressed_keys = pygame.key.get_pressed()
+z= 1
+
+
+    
 FramePerSec = pygame.time.Clock()
  
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Game")
- 
+pygame.display.set_caption("programming torture")
+if screen == 1:
+    displaysurface.fill((0,54,92))
+    pygame.display.update()
+    #os.waitpid(pressed_keys[K_j])
+#    if pressed_keys[K_j]:
+#        z = 2
+#        time.sleep(9999999999999999999999999999999999999999)
+
+    pygame.init()
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__()
+        super().__init__() 
         #self.image = pygame.image.load("character.png")
-        #character = pygame.image.load("character.JPG")
-        #pygame.display.blit(character,(30,30))
         self.surf = pygame.Surface((30, 30))
-        self.surf.fill((0,160,255))
+        self.surf.fill((255,255,0))
         self.rect = self.surf.get_rect()
    
         self.pos = vec((10, 360))
@@ -79,7 +93,7 @@ class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((random.randint(50,100), 12))
-        self.surf.fill((0,255,190))
+        self.surf.fill((0,255,0))
         self.rect = self.surf.get_rect(center = (random.randint(0,WIDTH-10),
                                                  random.randint(0, HEIGHT-30)))
  
@@ -118,7 +132,7 @@ PT1 = platform()
 P1 = Player()
  
 PT1.surf = pygame.Surface((WIDTH, 20))
-PT1.surf.fill((100,0,255))
+PT1.surf.fill((0,0,0))
 PT1.rect = PT1.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
  
 all_sprites = pygame.sprite.Group()
@@ -137,7 +151,7 @@ for x in range(random.randint(4,5)):
     platforms.add(pl)
     all_sprites.add(pl)
  
-
+ 
 while True:
     P1.update()
     for event in pygame.event.get():
@@ -157,7 +171,24 @@ while True:
             plat.rect.y += abs(P1.vel.y)
             if plat.rect.top >= HEIGHT:
                 plat.kill()
+    if P1.rect.top > HEIGHT:
+        for entity in all_sprites:
+            entity.kill()
+            time.sleep(1)
+            displaysurface.fill((0,54,92))
+            pygame.display.update()
+            time.sleep(1)
+            screen = 3
+
+
+
  
     plat_gen()
-    #displaysurface.fill((0,2,200))
+    displaysurface.fill((0,64,92))
+     
+    for entity in all_sprites:
+        displaysurface.blit(entity.surf, entity.rect)
+        entity.move()
  
+    pygame.display.update()
+    FramePerSec.tick(FPS)
