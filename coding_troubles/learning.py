@@ -3,12 +3,13 @@ from pygame.locals import *
 import sys
 import random
 import time
-import os
 
  
 pygame.init()
 vec = pygame.math.Vector2 #2 for two dimensional
- 
+blue = (0,54,92)
+white = (255, 255, 255)
+green = (0, 255, 0)
 HEIGHT = 450
 WIDTH = 400
 ACC = 0.5
@@ -17,30 +18,43 @@ FPS = 60
 screen = 1
 pressed_keys = pygame.key.get_pressed()
 z= 1
-
-
-    
+font = pygame.font.Font('freesansbold.ttf', 22)
+text = font.render('YOU DIED', True, green, blue)
+textRect = text.get_rect()
+ont = pygame.font.Font('freesansbold.ttf', 32)
+ext = font.render('I will now crash', True, green, blue)
+extRect = text.get_rect()
+fon = pygame.font.Font('freesansbold.ttf', 32)
+tex = font.render('From turtle programing studios', True, green, blue)
+textRec = text.get_rect()
+textRec.center = (WIDTH // 5, HEIGHT // 2)
 FramePerSec = pygame.time.Clock()
  
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("programming torture")
 if screen == 1:
     displaysurface.fill((0,54,92))
+    displaysurface.blit(tex, textRec)
     pygame.display.update()
+    time.sleep(5)
     #os.waitpid(pressed_keys[K_j])
 #    if pressed_keys[K_j]:
 #        z = 2
 #        time.sleep(9999999999999999999999999999999999999999)
 
     pygame.init()
-
+textRect.center = (WIDTH // 2, HEIGHT // 2)
+extRect.center = (WIDTH // 2.5, HEIGHT // 1.75)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
         #self.image = pygame.image.load("character.png")
         self.surf = pygame.Surface((30, 30))
-        self.surf.fill((255,255,0))
+        self.surfs = pygame.Surface((30, 30))
+        self.surf.fill((150,150,150))
+        self.surfs.fill((250,0,0))
         self.rect = self.surf.get_rect()
+        self.rect = self.surfs.get_rect()
    
         self.pos = vec((10, 360))
         self.vel = vec(0,0)
@@ -93,7 +107,7 @@ class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((random.randint(50,100), 12))
-        self.surf.fill((0,255,0))
+        self.surf.fill((128,128,0))
         self.rect = self.surf.get_rect(center = (random.randint(0,WIDTH-10),
                                                  random.randint(0, HEIGHT-30)))
  
@@ -179,9 +193,12 @@ while True:
             pygame.display.update()
             time.sleep(1)
             screen = 3
-
-
-
+            displaysurface.blit(text, textRect)
+            displaysurface.blit(ext, extRect)
+            pygame.display.update()
+            time.sleep(5)
+            pygame.quit()
+            sys.exit()
  
     plat_gen()
     displaysurface.fill((0,64,92))
