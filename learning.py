@@ -18,12 +18,12 @@ class Player(pygame.sprite.Sprite):
         super().__init__() 
         #self.image = pygame.image.load("character.png")
         self.surf = pygame.Surface((30, 30))
-        self.surfs = pygame.Surface((30, 30))
+        H_box = pygame.Surface((30, 30))
         self.surf.fill((150,150,150))
-        self.surfs.fill((250,0,0))
+        H_box.fill((250,0,0))
         self.rect = self.surf.get_rect()
-        self.rect = self.surfs.get_rect()
-   
+        self.rect = H_box.get_rect()
+        
         self.pos = vec((10, 360))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
@@ -110,26 +110,29 @@ def main():
     pygame.init()
     vec = pygame.math.Vector2 #2 for two dimensional
     blue = (0,54,92)
-    white = (255, 255, 255)
+    white = (200, 200, 200)
     green = (0, 255, 0)
     HEIGHT = 450
     WIDTH = 400
     ACC = 0.5
-    FRIC = -0.12
+    FRIC = -0.12 
     FPS = 60
     screen = 1
     pressed_keys = pygame.key.get_pressed()
-    font = pygame.font.Font('freesansbold.ttf', 22)
-    text = font.render('YOU DIED', True, green, blue)
+    font_22_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 22)
+    font_44_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 44)
+    text = font_22_sans.render('YOU DIED', True, white, blue)
     textRect = text.get_rect()
-    ont = pygame.font.Font('freesansbold.ttf', 32)
-    ext = font.render('press j to restart', True, green, blue)
+    ext = font_22_sans.render('press J to restart', True, white, blue)
     extRect = text.get_rect()
-    fon = pygame.font.Font('freesansbold.ttf', 32)
-    tex = font.render('From LB programing studios', True, green, blue)
-    tet = font.render('press space to play', True, green, blue)
+    tex = font_22_sans.render('From LB programing studios', True, white, blue)
+    tet = font_22_sans.render('Press Space To Play', True, white, blue)
+    ten = font_44_sans.render('a knights climb', True, white, blue)
     textRet = text.get_rect()
-    textRet.center = (WIDTH // 2.7, HEIGHT // 2)
+    textRet.center = (WIDTH // 2.9, HEIGHT // 1.25)
+    textRen = text.get_rect()
+
+    textRen.center = (WIDTH // 4.5, HEIGHT // 3.5)
     textRec = text.get_rect()
     textRec.center = (WIDTH // 4.5, HEIGHT // 2)
     FramePerSec = pygame.time.Clock()
@@ -142,17 +145,25 @@ def main():
         displaysurface.blit(tex, textRec)
         pygame.display.update()
         time.sleep(2)
-        screen = 4
-    if screen == 4:
+        screen = 2
+    if screen == 2:
         displaysurface.fill((0,54,92))
         displaysurface.blit(tet, textRet)
+
+        displaysurface.blit(ten, textRen)
         pygame.display.update()
-        time.sleep(2)
-
-
-        pygame.init()
+        space = False
+        while space == False:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN: 
+                    if event.key == pygame.K_SPACE:
+                        space = True
+                    elif event.key == pygame.K_q:        
+                            pygame.quit()
+                            sys.exit()
+                
     textRect.center = (WIDTH // 2, HEIGHT // 2)
-    extRect.center = (WIDTH // 2.5, HEIGHT // 1.75)
+    extRect.center = (WIDTH // 3, HEIGHT // 1.75)
 
     PT1 = platform()
     P1 = Player()
@@ -164,6 +175,7 @@ def main():
     all_sprites = pygame.sprite.Group()
     all_sprites.add(PT1)
     all_sprites.add(P1)
+    all_sprites.add(bag)
     
     platforms = pygame.sprite.Group()
     platforms.add(PT1)
@@ -201,7 +213,7 @@ def main():
                 entity.kill()
             displaysurface.fill((0,54,92))
             pygame.display.update()
-            screen = 3
+            screen = 4
             displaysurface.blit(text, textRect)
             displaysurface.blit(ext, extRect)
             pygame.display.update()
