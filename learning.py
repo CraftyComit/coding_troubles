@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
         self.surf = pygame.image.load("carecter1.png")
-        H_box = pygame.Surface((60, 60))
+        H_box = pygame.Surface((30, 60))
         #self.surf.fill((150,150,150))
         H_box.fill((250,0,0))
         self.rect = self.surf.get_rect()
@@ -48,12 +48,11 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = WIDTH
              
         self.rect.midbottom = self.pos
- 
     def jump(self, platforms): 
         hits = pygame.sprite.spritecollide(self, platforms, False)
         if hits and not self.jumping:
            self.jumping = True
-           self.vel.y = -15
+           self.vel.y = -18
  
     def cancel_jump(self):
         if self.jumping:
@@ -73,7 +72,7 @@ class Player(pygame.sprite.Sprite):
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface((random.randint(50,100), 12))
+        self.surf = pygame.Surface((random.randint(50,100), 15))
         self.surf.fill((128,128,0))
         self.rect = self.surf.get_rect(center = (random.randint(0,WIDTH-10),
                                                  random.randint(0, HEIGHT-30)))
@@ -92,14 +91,14 @@ def check(platform, groupies):
         C = False
  
 def plat_gen(platforms, all_sprites):
-    while len(platforms) < 6:
+    while len(platforms) < 4:
         width = random.randrange(50,100)
         p  = platform()      
         C = True
          
         while C:
              p = platform()
-             p.rect.center = (random.randrange(0, WIDTH - width),
+             p.rect.center = (random.randrange(50, WIDTH - width),
                               random.randrange(-50, 0))
              C = check(p, platforms)
         platforms.add(p)
@@ -118,23 +117,30 @@ def main():
     FPS = 60
     screen = 1
     pressed_keys = pygame.key.get_pressed()
+    font_27_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 27)
     font_22_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 22)
-    font_44_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 44)
+    font_8_sans = pygame.font.Font('Pixelify_Sans\PixelifySans-VariableFont_wght.ttf', 8)
     text_death_screen = font_22_sans.render('YOU DIED', True, white, blue)
     textRect_death_screen = text_death_screen.get_rect()
     text_death_screen2 = font_22_sans.render('press J to restart', True, white, blue)
     textRect_death_screen2 = text_death_screen2.get_rect()
     text_start = font_22_sans.render('From LB programing studios', True, white, blue)
     text_start2 = font_22_sans.render('Press Space To Play', True, white, blue)
-    text_start3 = font_44_sans.render('a knights climb', True, white, blue)
+    text_start3 = font_27_sans.render('a torturous fortnite', True, white, blue)
+    text_start4 = font_8_sans.render('not the game you think you know', True, white, blue)
     text_level = font_22_sans.render('press 123... to select your level', True, white, blue)
     textRet = text_death_screen.get_rect()
+    text_start4_rec = (WIDTH // 2, HEIGHT // 2.75)
+    text_start3_rec = (WIDTH // 10, HEIGHT // 3.5)
     textRet.center = (WIDTH // 2.9, HEIGHT // 1.25)
     textRen = text_death_screen.get_rect()
+    text_level_rect = text_level.get_rect()
+    text_level_rect.center = (WIDTH // 2, HEIGHT // 2)
     textRect_death_screen2.center = (WIDTH // 1.5, HEIGHT // 3.5)
     textRect_death_screen.center = (WIDTH // 3, HEIGHT // 1.5)
     textRen.center = (WIDTH // 4.5, HEIGHT // 3.5)
     textRec = text_death_screen.get_rect()
+    #text_level_block = space.get_rect()
     textRec.center = (WIDTH // 4.5, HEIGHT // 2)
     FramePerSec = pygame.time.Clock()
     #button_surface = pygame.surface((100, 30))
@@ -150,8 +156,8 @@ def main():
     if screen == 2:
         displaysurface.fill((0,54,92))
         displaysurface.blit(text_start2, textRet)
-
-        displaysurface.blit(text_start3, textRen)
+        displaysurface.blit(text_start4, text_start4_rec)
+        displaysurface.blit(text_start3, text_start3_rec)
         pygame.display.update()
         space = False
         while space == False:
@@ -164,10 +170,9 @@ def main():
                             pygame.quit()
                             sys.exit()
     #if screen == 3:
-    #    displaysurface.fill(0,54,92)
-    #    displaysurface.blit(text_level, textRet)
-    #textRect.center = (WIDTH // 2, HEIGHT // 2)
-    #extRect.center = (WIDTH // 3, HEIGHT // 1.75)
+    #    displaysurface.fill((0,54,92))
+    #    displaysurface.blit(text_level, text_level_rect)
+
 
     PT1 = platform()
     P1 = Player()
